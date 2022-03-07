@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import {
   createTheme,
   responsiveFontSizes,
@@ -54,13 +54,28 @@ function App() {
           <div>
             <input onChange={weatherInputHandler} type="text" />
             <button onClick={searchWeather}>Submit</button>
-            <Typography variant="h2">
+            <Typography variant="h4">
               {weather.location.region}, {weather.location.country}
             </Typography>
             <Typography>Sun 6th March</Typography>
-            <Typography>
-              The temperature is {weather.current.temp_c}
-              &#176;c and it feels like {weather.current.feelslike_c}&#176;c
+            <Grid container>
+              <Grid item>
+                <Typography variant="h2">
+                  {weather.current.temp_c}&#176;c
+                  <br />
+                  {weather.current.condition.text}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <img
+                  src={weather.current.condition.icon}
+                  alt="current condition"
+                />
+              </Grid>
+            </Grid>
+            {/* -------------------------------------- */}
+            {/* <Typography variant="h2">
+              feels like {weather.current.feelslike_c}&#176;c
             </Typography>
             <Typography>
               The temperature is {weather.current.temp_f}
@@ -71,9 +86,6 @@ function App() {
               Wind {weather.current.wind_mph}mph. direction{" "}
               {weather.current.wind_dir}
             </Typography>
-            <Typography>{weather.current.condition.text}</Typography>
-            <img src={weather.current.condition.icon} alt="current condition" />
-
             <Typography variant="h4">7 day forecast</Typography>
             <Typography>
               Date: {weather.forecast.forecastday[0].date}
@@ -94,7 +106,7 @@ function App() {
               Sunrise{weather.forecast.forecastday[0].astro.sunrise}
               <br />
               Sunset{weather.forecast.forecastday[0].astro.sunset}
-            </Typography>
+            </Typography> */}
           </div>
         )}
       </Box>
