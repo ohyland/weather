@@ -99,7 +99,7 @@ function App() {
       >
         {weather && (
           <div className={classes.root}>
-            <Typography paddingTop={1} variant="h5">
+            <Typography variant="h5">
               {weather.location.region}, {weather.location.country}
             </Typography>
             <Typography variant="caption" paddingBottom={1}>
