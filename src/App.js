@@ -1,18 +1,34 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, Divider } from "@mui/material";
 import {
   createTheme,
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      "& .MuiGrid-container": {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+        textAlign: "right",
+        padding: "15px",
+      },
+    },
+  })
+);
+
 function App() {
   const [weather, setWeather] = useState(null);
   const [weatherInput, setWeatherInput] = useState("");
+  const classes = useStyles();
 
   useEffect(() => {
     axios
@@ -45,34 +61,40 @@ function App() {
       <Box
         sx={{
           margin: "7vw",
-          padding: "5vw",
-          border: "1px solid lightgrey",
+          backgroundColor: "rgba(0, 0, 0, 0)",
+          borderRadius: "4px",
+          height: "100vh",
         }}
         className="App"
       >
         {weather && (
-          <div>
+          <div className={classes.root}>
             <input onChange={weatherInputHandler} type="text" />
             <button onClick={searchWeather}>Submit</button>
-            <Typography variant="h4">
+            <Typography paddingTop={1} variant="h5">
               {weather.location.region}, {weather.location.country}
             </Typography>
-            <Typography>Sun 6th March</Typography>
+            <Typography variant="caption" paddingBottom={1}>
+              Sun 6th March
+            </Typography>
+
             <Grid container>
-              <Grid item>
-                <Typography variant="h2">
-                  {weather.current.temp_c}&#176;c
-                  <br />
-                  {weather.current.condition.text}
-                </Typography>
-              </Grid>
-              <Grid item>
+              <Grid item xs={3}>
                 <img
                   src={weather.current.condition.icon}
                   alt="current condition"
                 />
               </Grid>
+              <Grid item xs={5}>
+                <Typography variant="h1">
+                  {weather.current.temp_c}&#176;c
+                </Typography>
+                <Typography variant="body1">
+                  {weather.current.condition.text}
+                </Typography>
+              </Grid>
             </Grid>
+            <Divider />
             {/* -------------------------------------- */}
             {/* <Typography variant="h2">
               feels like {weather.current.feelslike_c}&#176;c
