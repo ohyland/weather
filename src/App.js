@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Typography, Grid, Divider } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Typography,
+  Grid,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import {
   createTheme,
   responsiveFontSizes,
@@ -58,6 +66,28 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+            ></IconButton>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1 }}
+            >
+              <input onChange={weatherInputHandler} type="text" />
+              <button onClick={searchWeather}>Submit</button>
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Box>
       <Box
         sx={{
           margin: "7vw",
@@ -69,8 +99,6 @@ function App() {
       >
         {weather && (
           <div className={classes.root}>
-            <input onChange={weatherInputHandler} type="text" />
-            <button onClick={searchWeather}>Submit</button>
             <Typography paddingTop={1} variant="h5">
               {weather.location.region}, {weather.location.country}
             </Typography>
