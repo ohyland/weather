@@ -8,13 +8,57 @@ import {
   Grid,
   Divider,
   IconButton,
+  InputBase,
+  Button,
 } from "@mui/material";
 import {
   createTheme,
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material/styles";
+import { styled, alpha } from "@mui/material/styles";
+import { Search as SearchIcon } from "@mui/icons-material";
 import { createStyles, makeStyles } from "@mui/styles";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 1),
+    display: "flex",
+
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`, // vertical padding + font size from searchIcon
+    transition: theme.transitions.create("width"),
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -55,6 +99,7 @@ function App() {
   };
 
   const searchWeather = (e) => {
+    e.preventDefault();
     axios
       .get(
         `https://api.weatherapi.com/v1/current.json?key=76cb3407f2014f49902211656202611&q=${weatherInput}&days=7`
@@ -82,8 +127,23 @@ function App() {
               component="div"
               sx={{ flexGrow: 1 }}
             >
-              <input onChange={weatherInputHandler} type="text" />
-              <button onClick={searchWeather}>Submit</button>
+              <form onSubmit={searchWeather}>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={weatherInputHandler}
+                    type="text"
+                  />
+
+                  <Button variant="contained" size="small" type="submit">
+                    Submit
+                  </Button>
+                </Search>
+              </form>
             </Typography>
           </Toolbar>
         </AppBar>
@@ -113,7 +173,7 @@ function App() {
                   alt="current condition"
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={7}>
                 <Typography variant="h1">
                   {weather.current.temp_c}&#176;c
                 </Typography>
