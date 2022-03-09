@@ -183,40 +183,7 @@ function App() {
               </Grid>
             </Grid>
             <Divider />
-            {/* -------------------------------------- */}
-            {/* <Typography variant="h2">
-              feels like {weather.current.feelslike_c}&#176;c
-            </Typography>
-            <Typography>
-              The temperature is {weather.current.temp_f}
-              &#176;f and it feels like {weather.current.feelslike_f}&#176;f
-            </Typography>
-            <Typography>Wind {weather.current.wind_mph}mph</Typography>
-            <Typography>
-              Wind {weather.current.wind_mph}mph. direction{" "}
-              {weather.current.wind_dir}
-            </Typography>
-            <Typography variant="h4">7 day forecast</Typography>
-            <Typography>
-              Date: {weather.forecast.forecastday[0].date}
-              <br />
-              Average temperature:{" "}
-              {weather.forecast.forecastday[0].day.avgtemp_c}&#176;c
-              <br />
-              Average temperature:{" "}
-              {weather.forecast.forecastday[0].day.avgtemp_f}&#176;f
-              <br />
-              {weather.forecast.forecastday[0].day.condition.text}
-              <br />
-              <img
-                src={weather.forecast.forecastday[0].day.condition.icon}
-                alt="current condition"
-              />
-              <br />
-              Sunrise{weather.forecast.forecastday[0].astro.sunrise}
-              <br />
-              Sunset{weather.forecast.forecastday[0].astro.sunset}
-            </Typography> */}
+            
           </div>
         )}
       </Box>
