@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   AppBar,
-  Toolbar,
   Box,
-  Typography,
-  Grid,
-  Divider,
-  IconButton,
-  InputBase,
   Button,
+  Divider,
+  Grid,
+  InputBase,
+  Toolbar,
+  Typography,
 } from "@mui/material";
 import {
   createTheme,
@@ -21,14 +20,17 @@ import { Search as SearchIcon } from "@mui/icons-material";
 import { createStyles, makeStyles } from "@mui/styles";
 
 const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
+  borderRadius: theme.shape.borderRadius,
+  position: "relative",
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginRight: theme.spacing(2),
+  alignItems: "center",
+  display: "flex",
+  justifyContent: "space-between",
   marginLeft: 0,
+  marginRight: theme.spacing(2),
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
@@ -37,21 +39,20 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
   alignItems: "center",
+  display: "flex",
+  height: "100%",
   justifyContent: "center",
+  padding: theme.spacing(0, 2),
+  pointerEvents: "none",
+  position: "absolute",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 1),
     display: "flex",
-
+    padding: theme.spacing(1, 1, 1, 1),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`, // vertical padding + font size from searchIcon
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("md")]: {
@@ -67,11 +68,11 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       "& .MuiGrid-container": {
-        flexDirection: "row",
         alignItems: "center",
+        flexDirection: "row",
         justifyContent: "space-around",
-        textAlign: "right",
         padding: "15px",
+        textAlign: "right",
       },
     },
   })
@@ -114,13 +115,6 @@ function App() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            ></IconButton>
             <Typography
               variant="h6"
               noWrap
@@ -133,13 +127,18 @@ function App() {
                     <SearchIcon />
                   </SearchIconWrapper>
                   <StyledInputBase
-                    placeholder="Search…"
                     inputProps={{ "aria-label": "search" }}
                     onChange={weatherInputHandler}
+                    placeholder="Search…"
                     type="text"
                   />
 
-                  <Button variant="contained" size="small" type="submit">
+                  <Button
+                    size="small"
+                    sx={{ m: 0.5 }}
+                    type="submit"
+                    variant="contained"
+                  >
                     Submit
                   </Button>
                 </Search>
@@ -150,10 +149,10 @@ function App() {
       </Box>
       <Box
         sx={{
-          margin: "7vw",
           backgroundColor: "rgba(0, 0, 0, 0)",
           borderRadius: "4px",
           height: "100vh",
+          margin: "7vw",
         }}
         className="App"
       >
@@ -183,7 +182,6 @@ function App() {
               </Grid>
             </Grid>
             <Divider />
-            
           </div>
         )}
       </Box>
