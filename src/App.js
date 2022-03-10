@@ -18,6 +18,7 @@ import {
 import { styled, alpha } from "@mui/material/styles";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { createStyles, makeStyles } from "@mui/styles";
+import Navbar from "./components/Navbar";
 
 const Search = styled("div")(({ theme }) => ({
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -34,7 +35,7 @@ const Search = styled("div")(({ theme }) => ({
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
-    width: "auto",
+    maxWidth: "30ch",
   },
 }));
 
@@ -113,6 +114,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ flexGrow: 1 }}>
+        <Navbar />
         <AppBar position="static">
           <Toolbar>
             <Typography
