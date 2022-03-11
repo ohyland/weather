@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  AppBar,
-  Toolbar,
-  Box,
-  Typography,
-  Grid,
-  Divider,
-  IconButton,
-} from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 import {
   createTheme,
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material/styles";
 import { createStyles, makeStyles } from "@mui/styles";
+import SearchBar from "./components/SearchBar";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -23,11 +16,11 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       "& .MuiGrid-container": {
-        flexDirection: "row",
         alignItems: "center",
+        flexDirection: "row",
         justifyContent: "space-around",
-        textAlign: "right",
         padding: "15px",
+        textAlign: "right",
       },
     },
   })
@@ -55,6 +48,7 @@ function App() {
   };
 
   const searchWeather = (e) => {
+    e.preventDefault();
     axios
       .get(
         `https://api.weatherapi.com/v1/current.json?key=76cb3407f2014f49902211656202611&q=${weatherInput}&days=7`
@@ -66,40 +60,23 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            ></IconButton>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1 }}
-            >
-              <input onChange={weatherInputHandler} type="text" />
-              <button onClick={searchWeather}>Submit</button>
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </Box>
+      <SearchBar
+        searchWeather={searchWeather}
+        weatherInputHandler={weatherInputHandler}
+      />
+
       <Box
         sx={{
-          margin: "7vw",
           backgroundColor: "rgba(0, 0, 0, 0)",
           borderRadius: "4px",
           height: "100vh",
+          margin: "7vw",
         }}
         className="App"
       >
         {weather && (
           <div className={classes.root}>
-            <Typography paddingTop={1} variant="h5">
+            <Typography variant="h5">
               {weather.location.region}, {weather.location.country}
             </Typography>
             <Typography variant="caption" paddingBottom={1}>
@@ -113,7 +90,7 @@ function App() {
                   alt="current condition"
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={7}>
                 <Typography variant="h1">
                   {weather.current.temp_c}&#176;c
                 </Typography>
@@ -123,40 +100,6 @@ function App() {
               </Grid>
             </Grid>
             <Divider />
-            {/* -------------------------------------- */}
-            {/* <Typography variant="h2">
-              feels like {weather.current.feelslike_c}&#176;c
-            </Typography>
-            <Typography>
-              The temperature is {weather.current.temp_f}
-              &#176;f and it feels like {weather.current.feelslike_f}&#176;f
-            </Typography>
-            <Typography>Wind {weather.current.wind_mph}mph</Typography>
-            <Typography>
-              Wind {weather.current.wind_mph}mph. direction{" "}
-              {weather.current.wind_dir}
-            </Typography>
-            <Typography variant="h4">7 day forecast</Typography>
-            <Typography>
-              Date: {weather.forecast.forecastday[0].date}
-              <br />
-              Average temperature:{" "}
-              {weather.forecast.forecastday[0].day.avgtemp_c}&#176;c
-              <br />
-              Average temperature:{" "}
-              {weather.forecast.forecastday[0].day.avgtemp_f}&#176;f
-              <br />
-              {weather.forecast.forecastday[0].day.condition.text}
-              <br />
-              <img
-                src={weather.forecast.forecastday[0].day.condition.icon}
-                alt="current condition"
-              />
-              <br />
-              Sunrise{weather.forecast.forecastday[0].astro.sunrise}
-              <br />
-              Sunset{weather.forecast.forecastday[0].astro.sunset}
-            </Typography> */}
           </div>
         )}
       </Box>
