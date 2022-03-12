@@ -19,6 +19,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import moment from "moment";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -94,7 +95,7 @@ function App() {
             </Typography>
 
             <Typography variant="caption" paddingBottom={1}>
-              Sun 6th March
+              {moment(weather.location.localtime).format("MMMM Do YY")}
             </Typography>
             <Grid container>
               <Grid item xs={3}>
@@ -117,7 +118,7 @@ function App() {
               <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                   <TableBody>
-                    {weather.forecast.forecastday.map((eachForecastday, x) => (
+                    {weather.forecast.forecastday.map((eachForecastDay, x) => (
                       <TableRow
                         key={x}
                         sx={{
@@ -125,20 +126,20 @@ function App() {
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          {eachForecastday.date}
+                          {moment(eachForecastDay.date).format("dddd")}
                         </TableCell>
                         <TableCell>
                           <img
-                            src={eachForecastday.day.condition.icon}
+                            src={eachForecastDay.day.condition.icon}
                             alt="current condition"
                             height="30px"
                           />
                         </TableCell>
                         <TableCell align="right">
-                          {eachForecastday.day.mintemp_c}
+                          {eachForecastDay.day.mintemp_c}
                         </TableCell>
                         <TableCell align="right">
-                          {eachForecastday.day.maxtemp_c}
+                          {eachForecastDay.day.maxtemp_c}
                         </TableCell>
                       </TableRow>
                     ))}
