@@ -8,15 +8,16 @@ import {
 import { createStyles, makeStyles } from "@mui/styles";
 import SearchBar from "./components/SearchBar";
 import {
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Box,
   Divider,
   Grid,
   Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
 } from "@mui/material";
 
 let theme = createTheme();
@@ -44,7 +45,7 @@ function App() {
   useEffect(() => {
     axios
       .get(
-        "https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=dublin&days=3&aqi=no&alerts=no"
+        "https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=London&days=7&aqi=no&alerts=no"
       )
       .then((data) => {
         setWeather(data.data);
@@ -62,11 +63,11 @@ function App() {
     e.preventDefault();
     axios
       .get(
-        `https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=${weatherInput}&days=3&aqi=no&alerts=no`
+        `https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=${weatherInput}&days=7&aqi=no&alerts=no`
       )
       .then((data) => {
         setWeather(data.data);
-        console.log(data.data.forecast);
+        console.log("data", data.data);
       });
   };
 
@@ -113,55 +114,37 @@ function App() {
             </Grid>
             <Divider />
             <div>
-              <List
-                sx={{
-                  width: "100%",
-                  maxWidth: 360,
-                  bgcolor: "background.paper",
-                }}
-              >
-                <Typography variant="h5">Sunday </Typography>
-                <ListItem>
-                  <ListItemAvatar>
-                    <img
-                      src={weather.forecast.forecastday[1].day.condition.icon}
-                      alt="current condition"
-                      height="40px"
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={weather.forecast.forecastday[1].day.condition.text}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar></Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Average"
-                    secondary={weather.forecast.forecastday[1].day.avgtemp_c}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar></Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Sunset"
-                    secondary={weather.forecast.forecastday[1].astro.sunset}
-                  />
-                </ListItem>
-
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar></Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Sunrise"
-                    secondary={weather.forecast.forecastday[0].astro.sunrise}
-                  />
-                </ListItem>
-              </List>
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableBody>
+                    {weather.forecast.forecastday.map((eachForecastday, x) => (
+                      <TableRow
+                        key={x}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {eachForecastday.date}
+                        </TableCell>
+                        <TableCell>
+                          <img
+                            src={eachForecastday.day.condition.icon}
+                            alt="current condition"
+                            height="30px"
+                          />
+                        </TableCell>
+                        <TableCell align="right">
+                          {eachForecastday.day.mintemp_c}
+                        </TableCell>
+                        <TableCell align="right">
+                          {eachForecastday.day.maxtemp_c}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
           </div>
         )}
