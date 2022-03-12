@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Divider, Grid, Typography } from "@mui/material";
 import {
   createTheme,
   responsiveFontSizes,
@@ -8,6 +7,17 @@ import {
 } from "@mui/material/styles";
 import { createStyles, makeStyles } from "@mui/styles";
 import SearchBar from "./components/SearchBar";
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Box,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -34,11 +44,12 @@ function App() {
   useEffect(() => {
     axios
       .get(
-        "https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=Dublin&days=7"
+        "https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=dublin&days=3&aqi=no&alerts=no"
       )
       .then((data) => {
         setWeather(data.data);
         console.log(data.data.current);
+        console.log(data.data.forecast);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -51,10 +62,11 @@ function App() {
     e.preventDefault();
     axios
       .get(
-        `https://api.weatherapi.com/v1/current.json?key=76cb3407f2014f49902211656202611&q=${weatherInput}&days=7`
+        `https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=${weatherInput}&days=3&aqi=no&alerts=no`
       )
       .then((data) => {
         setWeather(data.data);
+        console.log(data.data.forecast);
       });
   };
 
@@ -79,10 +91,10 @@ function App() {
             <Typography variant="h5">
               {weather.location.region}, {weather.location.country}
             </Typography>
+
             <Typography variant="caption" paddingBottom={1}>
               Sun 6th March
             </Typography>
-
             <Grid container>
               <Grid item xs={3}>
                 <img
@@ -100,6 +112,57 @@ function App() {
               </Grid>
             </Grid>
             <Divider />
+            <div>
+              <List
+                sx={{
+                  width: "100%",
+                  maxWidth: 360,
+                  bgcolor: "background.paper",
+                }}
+              >
+                <Typography variant="h5">Sunday </Typography>
+                <ListItem>
+                  <ListItemAvatar>
+                    <img
+                      src={weather.forecast.forecastday[1].day.condition.icon}
+                      alt="current condition"
+                      height="40px"
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={weather.forecast.forecastday[1].day.condition.text}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar></Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="Average"
+                    secondary={weather.forecast.forecastday[1].day.avgtemp_c}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar></Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="Sunset"
+                    secondary={weather.forecast.forecastday[1].astro.sunset}
+                  />
+                </ListItem>
+
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar></Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="Sunrise"
+                    secondary={weather.forecast.forecastday[0].astro.sunrise}
+                  />
+                </ListItem>
+              </List>
+            </div>
           </div>
         )}
       </Box>
