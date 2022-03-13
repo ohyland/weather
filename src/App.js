@@ -9,7 +9,6 @@ import { createStyles, makeStyles } from "@mui/styles";
 import SearchBar from "./components/SearchBar";
 import {
   Box,
-  Divider,
   Grid,
   Typography,
   Table,
@@ -134,10 +133,10 @@ function App() {
                           />
                         </TableCell>
                         <TableCell align="right">
-                          {eachForecastDay.day.mintemp_c}
+                          {eachForecastDay.day.maxtemp_c}&#176;c
                         </TableCell>
                         <TableCell align="right">
-                          {eachForecastDay.day.maxtemp_c}
+                          {eachForecastDay.day.mintemp_c}&#176;c
                         </TableCell>
                       </TableRow>
                     ))}
