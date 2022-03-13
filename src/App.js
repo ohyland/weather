@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Divider, Grid, Typography } from "@mui/material";
 import {
   createTheme,
   responsiveFontSizes,
@@ -8,6 +7,18 @@ import {
 } from "@mui/material/styles";
 import { createStyles, makeStyles } from "@mui/styles";
 import SearchBar from "./components/SearchBar";
+import {
+  Box,
+  Grid,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+} from "@mui/material";
+import moment from "moment";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -34,11 +45,12 @@ function App() {
   useEffect(() => {
     axios
       .get(
-        "https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=Dublin&days=7"
+        "https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=London&days=7&aqi=no&alerts=no"
       )
       .then((data) => {
         setWeather(data.data);
         console.log(data.data.current);
+        console.log(data.data.forecast);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -51,10 +63,11 @@ function App() {
     e.preventDefault();
     axios
       .get(
-        `https://api.weatherapi.com/v1/current.json?key=76cb3407f2014f49902211656202611&q=${weatherInput}&days=7`
+        `https://api.weatherapi.com/v1/forecast.json?key=76cb3407f2014f49902211656202611&q=${weatherInput}&days=7&aqi=no&alerts=no`
       )
       .then((data) => {
         setWeather(data.data);
+        console.log("data", data.data);
       });
   };
 
@@ -76,13 +89,12 @@ function App() {
       >
         {weather && (
           <div className={classes.root}>
-            <Typography variant="h5">
-              {weather.location.region}, {weather.location.country}
-            </Typography>
-            <Typography variant="caption" paddingBottom={1}>
-              Sun 6th March
-            </Typography>
+            <Typography variant="h5">{weather.location.name}</Typography>
+            <Typography variant="body1">{weather.location.country}</Typography>
 
+            <Typography variant="caption" paddingBottom={1}>
+              {moment(weather.location.localtime).format("MMMM Do YY")}
+            </Typography>
             <Grid container>
               <Grid item xs={3}>
                 <img
@@ -99,7 +111,39 @@ function App() {
                 </Typography>
               </Grid>
             </Grid>
-            <Divider />
+            <div>
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableBody>
+                    {weather.forecast.forecastday.map((eachForecastDay, x) => (
+                      <TableRow
+                        key={x}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {moment(eachForecastDay.date).format("dddd")}
+                        </TableCell>
+                        <TableCell>
+                          <img
+                            src={eachForecastDay.day.condition.icon}
+                            alt="current condition"
+                            height="30px"
+                          />
+                        </TableCell>
+                        <TableCell align="right">
+                          {eachForecastDay.day.maxtemp_c}&#176;c
+                        </TableCell>
+                        <TableCell align="right">
+                          {eachForecastDay.day.mintemp_c}&#176;c
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
           </div>
         )}
       </Box>
