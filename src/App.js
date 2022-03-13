@@ -90,9 +90,8 @@ function App() {
       >
         {weather && (
           <div className={classes.root}>
-            <Typography variant="h5">
-              {weather.location.region}, {weather.location.country}
-            </Typography>
+            <Typography variant="h5">{weather.location.name}</Typography>
+            <Typography variant="body1">{weather.location.country}</Typography>
 
             <Typography variant="caption" paddingBottom={1}>
               {moment(weather.location.localtime).format("MMMM Do YY")}
@@ -113,7 +112,6 @@ function App() {
                 </Typography>
               </Grid>
             </Grid>
-            <Divider />
             <div>
               <TableContainer component={Paper}>
                 <Table aria-label="simple table">
