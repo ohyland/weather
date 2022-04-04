@@ -31,7 +31,7 @@ const useStyles = makeStyles(() =>
         flexDirection: "row",
         justifyContent: "space-around",
         padding: "15px",
-        textAlign: "right",
+        textAlign: "left",
       },
     },
   })
@@ -90,24 +90,31 @@ function App() {
         {weather && (
           <div className={classes.root}>
             <Typography variant="h5">{weather.location.name}</Typography>
-            <Typography variant="body1">{weather.location.country}</Typography>
+            <Typography variant="h6">{weather.location.country}</Typography>
 
             <Typography variant="caption" paddingBottom={1}>
               {moment(weather.location.localtime).format("MMMM Do YY")}
             </Typography>
             <Grid container>
-              <Grid item xs={3}>
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  {weather.current.condition.text}
+                </Typography>
                 <img
                   src={weather.current.condition.icon}
                   alt="current condition"
                 />
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <Typography variant="h1">
                   {weather.current.temp_c}&#176;c
                 </Typography>
-                <Typography variant="body1">
-                  {weather.current.condition.text}
+                <Typography variant="caption">
+                  {`H: ${weather.forecast.forecastday[0].day.maxtemp_c}`}
+                  &#176;c
+                  <br />
+                  {`L: ${weather.forecast.forecastday[0].day.mintemp_c}`}
+                  &#176;c
                 </Typography>
               </Grid>
             </Grid>
@@ -123,7 +130,7 @@ function App() {
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          {moment(eachForecastDay.date).format("dddd")}
+                          {moment(eachForecastDay.date).format("ddd")}
                         </TableCell>
                         <TableCell>
                           <img
