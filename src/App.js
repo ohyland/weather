@@ -31,8 +31,11 @@ const useStyles = makeStyles(() =>
         alignItems: "center",
         flexDirection: "row",
         justifyContent: "space-around",
-        padding: "15px",
+        padding: "15px 0px",
         textAlign: "right",
+      },
+      "& .MuiGrid-item:nth-child(1)": {
+        textAlign: "left",
       },
     },
   })
@@ -103,7 +106,7 @@ function App() {
             </Typography>
             <Grid container>
               <Grid item xs={6}>
-                <Typography variant="body1">
+                <Typography variant="h3">
                   {weather.current.condition.text}
                 </Typography>
                 <img
@@ -112,7 +115,7 @@ function App() {
                 />
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="h1">
+                <Typography variant="h3">
                   {celsius
                     ? `${weather.current.temp_f}\u{00B0}f`
                     : `${weather.current.temp_c}\u{00B0}c`}
