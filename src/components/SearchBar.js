@@ -52,31 +52,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-// const searchWeather = (e) => {
-//   e.preventDefault();
-//   axios
-//     .get(
-//       `https://api.weatherapi.com/v1/current.json?key=76cb3407f2014f49902211656202611&q=${weatherInput}&days=7`
-//     )
-//     .then((data) => {
-//       setWeather(data.data);
-//     });
-// };
-
-const SearchBar = (props) => {
+export const SearchBar = ({ searchWeather, weatherInputHandler }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            <form onSubmit={props.searchWeather}>
+            <form onSubmit={searchWeather}>
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
                   inputProps={{ "aria-label": "search" }}
-                  onChange={props.weatherInputHandler}
+                  onChange={weatherInputHandler}
                   placeholder="Search…"
                   type="text"
                 />
@@ -97,5 +86,3 @@ const SearchBar = (props) => {
     </Box>
   );
 };
-
-export default SearchBar;

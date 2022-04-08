@@ -6,17 +6,18 @@ import {
   ThemeProvider,
 } from "@mui/material/styles";
 import { createStyles, makeStyles } from "@mui/styles";
-import SearchBar from "./components/SearchBar";
+import { SearchBar } from "./components/SearchBar";
+import { SwitchTeperatureControl } from "./components/SwitchTeperatureControl";
 import {
   Box,
   Grid,
-  Typography,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
-  Paper,
+  Typography,
 } from "@mui/material";
 import moment from "moment";
 
@@ -30,7 +31,10 @@ const useStyles = makeStyles(() =>
         alignItems: "center",
         flexDirection: "row",
         justifyContent: "space-around",
-        padding: "15px",
+        padding: "15px 0px",
+        textAlign: "right",
+      },
+      "& .MuiGrid-item:nth-child(1)": {
         textAlign: "left",
       },
     },
@@ -40,6 +44,7 @@ const useStyles = makeStyles(() =>
 function App() {
   const [weather, setWeather] = useState(null);
   const [weatherInput, setWeatherInput] = useState("");
+  const [celsius, setCelsius] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -71,6 +76,10 @@ function App() {
       });
   };
 
+  const handleTemperature = () => {
+    setCelsius(!celsius);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <SearchBar
@@ -89,15 +98,15 @@ function App() {
       >
         {weather && (
           <div className={classes.root}>
+            <SwitchTeperatureControl handleTemperature={handleTemperature} />
             <Typography variant="h5">{weather.location.name}</Typography>
             <Typography variant="h6">{weather.location.country}</Typography>
-
             <Typography variant="caption" paddingBottom={1}>
               {moment(weather.location.localtime).format("MMMM Do YY")}
             </Typography>
             <Grid container>
               <Grid item xs={6}>
-                <Typography variant="body1">
+                <Typography variant="h3">
                   {weather.current.condition.text}
                 </Typography>
                 <img
@@ -106,15 +115,19 @@ function App() {
                 />
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="h1">
-                  {weather.current.temp_c}&#176;c
+                <Typography variant="h3">
+                  {celsius
+                    ? `${weather.current.temp_f}\u{00B0}f`
+                    : `${weather.current.temp_c}\u{00B0}c`}
                 </Typography>
                 <Typography variant="caption">
-                  {`H: ${weather.forecast.forecastday[0].day.maxtemp_c}`}
-                  &#176;c
+                  {celsius
+                    ? `${weather.forecast.forecastday[0].day.maxtemp_c}`
+                    : `${weather.forecast.forecastday[0].day.maxtemp_f}`}
                   <br />
-                  {`L: ${weather.forecast.forecastday[0].day.mintemp_c}`}
-                  &#176;c
+                  {celsius
+                    ? `${weather.forecast.forecastday[0].day.mintemp_c}`
+                    : `${weather.forecast.forecastday[0].day.mintemp_f}`}
                 </Typography>
               </Grid>
             </Grid>
@@ -140,10 +153,14 @@ function App() {
                           />
                         </TableCell>
                         <TableCell align="right">
-                          {eachForecastDay.day.maxtemp_c}&#176;c
+                          {celsius
+                            ? `${eachForecastDay.day.maxtemp_c}`
+                            : `${eachForecastDay.day.maxtemp_f}`}
                         </TableCell>
                         <TableCell align="right">
-                          {eachForecastDay.day.mintemp_c}&#176;c
+                          {celsius
+                            ? `${eachForecastDay.day.mintemp_c}`
+                            : `${eachForecastDay.day.mintemp_f}`}
                         </TableCell>
                       </TableRow>
                     ))}
